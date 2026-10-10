@@ -9,10 +9,11 @@ body{{margin:0}}.w{{width:1080px;height:1080px;background:#FBF4E6;position:relat
 .t{{position:absolute;left:80px;right:80px;top:190px;font-size:88px;font-weight:900;line-height:1.22;color:#22304A;letter-spacing:-2px;word-break:keep-all}}
 .f{{position:absolute;left:80px;bottom:80px;font-size:36px;font-weight:700;color:#7A6A55}}.f b{{color:#E8743B}}
 .hill{{position:absolute;left:0;bottom:0}}
+.sub{{position:absolute;left:80px;bottom:134px;font-size:28px;font-weight:600;color:#9A8B76;letter-spacing:-0.5px}}
 </style></head><body><div class="w"><div class="tag">{c}</div><div class="t">{t}</div>
 <svg class="hill" width="1080" height="1080" viewBox="0 0 1080 1080"><path d="M0 1080 L0 1000 Q 600 980 1080 820 L1080 1080 Z" fill="#CFE3C6"/>
-<g transform="translate(640 600) scale(1.45)">{SQ}</g></svg>
-<div class="f">영끌 말고 <b>영차</b></div></div></body></html>'''
+<g transform="translate(640 600) scale(1.45)">{SQ}</g><g transform="translate(690 1010) scale(1.1)"><ellipse cx="0" cy="10" rx="17" ry="21" fill="#E2A845"/><ellipse cx="-5" cy="6" rx="5" ry="8" fill="#F2C46A"/><path d="M-21 2 Q-20 -16 0 -17 Q20 -16 21 2 Q0 8 -21 2 Z" fill="#8B5A2B"/><rect x="-2" y="-25" width="4" height="10" rx="2" fill="#6B4423"/></g><g transform="translate(735 1012) scale(1.05)"><ellipse cx="0" cy="10" rx="17" ry="21" fill="#E2A845"/><ellipse cx="-5" cy="6" rx="5" ry="8" fill="#F2C46A"/><path d="M-21 2 Q-20 -16 0 -17 Q20 -16 21 2 Q0 8 -21 2 Z" fill="#8B5A2B"/><rect x="-2" y="-25" width="4" height="10" rx="2" fill="#6B4423"/></g><g transform="translate(712 978) scale(1.0)"><ellipse cx="0" cy="10" rx="17" ry="21" fill="#E2A845"/><ellipse cx="-5" cy="6" rx="5" ry="8" fill="#F2C46A"/><path d="M-21 2 Q-20 -16 0 -17 Q20 -16 21 2 Q0 8 -21 2 Z" fill="#8B5A2B"/><rect x="-2" y="-25" width="4" height="10" rx="2" fill="#6B4423"/></g></svg>
+<div class="sub">다람쥐가 도토리 모으듯, 차곡차곡 영차영차</div><div class="f">영끌 말고 <b>영차</b></div></div></body></html>'''
 items=json.load(open(sys.argv[1]))
 with sync_playwright() as p:
     b=p.chromium.launch(); pg=b.new_page(viewport={'width':1080,'height':1080})
