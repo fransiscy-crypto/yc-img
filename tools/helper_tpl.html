@@ -1,0 +1,81 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>영차 발행 도우미</title><style>
+:root{--bg:#FBF4E6;--card:#fff;--ink:#22304A;--sub:#6B6255;--acc:#E8743B;--line:#EADFCB;--ok:#3E8E5E}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:'Noto Sans KR','Malgun Gothic','Apple SD Gothic Neo',sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:20px 16px 90px}
+h1{font-size:22px;margin:4px 0}.sub{color:var(--sub);font-size:14px}
+.tl{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:14px 0}
+.tl a{display:block;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;text-decoration:none;color:var(--ink);font-size:13px}
+.tl a b{display:block;font-size:14px}.tl a.done{background:#EAF5EE;border-color:#BFE0CB}
+.how{background:#fff;border:1px dashed #F0C29F;border-radius:14px;padding:12px 16px;font-size:14px;line-height:1.8}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin:18px 0;scroll-margin-top:12px}
+.card.isdone{opacity:.55}
+.grid{display:grid;grid-template-columns:minmax(0,360px) minmax(0,1fr);gap:18px}
+@media(max-width:860px){.grid{grid-template-columns:1fr}}
+.head{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.badge{background:#F3E7D3;border-radius:20px;padding:4px 10px;font-size:13px;font-weight:700}
+.badge.time{background:#FDE3D3;color:#B4532A}
+.done{margin-left:auto;font-size:14px;font-weight:700;color:var(--ok);cursor:pointer}
+.titles label{display:flex;gap:8px;align-items:flex-start;padding:5px 4px;border-radius:8px;cursor:pointer;font-size:14px;line-height:1.5}
+.btn{display:flex;align-items:center;gap:10px;width:100%;border:0;border-radius:14px;padding:14px 16px;margin:10px 0 0;font-size:17px;font-weight:800;cursor:pointer;font-family:inherit;text-align:left}
+.btn small{display:block;font-size:12.5px;font-weight:500;opacity:.85}
+.btn .n{flex:none;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.3);display:grid;place-items:center}
+.b1{background:#22304A;color:#fff}.b2{background:var(--acc);color:#fff;font-size:19px;padding:18px 16px}.b3{background:#F3E7D3;color:var(--ink)}.b3 .n{background:#fff}
+.btn.ok{outline:3px solid #9FD5B2}
+.fb{margin-top:12px;font-size:13px;color:var(--sub);line-height:1.7}
+.fb button{border:1px solid var(--line);background:#fff;border-radius:9px;padding:5px 9px;font-size:12.5px;cursor:pointer;font-family:inherit;color:var(--ink);margin:2px 2px 0 0}
+.info{font-size:13.5px;margin-top:12px;line-height:1.7}
+details{font-size:12.5px;color:var(--sub);margin-top:8px}details li{word-break:break-all}
+.preview{border:1px solid var(--line);border-radius:14px;padding:18px 22px;max-height:860px;overflow:auto;background:#fff;font-family:'Nanum Gothic','Malgun Gothic',sans-serif}
+.preview p{margin:0}.preview img{border-radius:12px;max-width:100%;width:560px;display:block;margin:6px auto}.im{position:relative;cursor:pointer;margin:12px 0}.im span{position:absolute;left:8px;top:8px;background:#22304A;color:#fff;font-size:11px;border-radius:8px;padding:2px 8px}.im:hover img{outline:3px solid #F6C9AE}.im.ok img{outline:3px solid #9FD5B2}
+.toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 18px;border-radius:14px;font-size:15px;max-width:92vw;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.on{opacity:1}.toast b{color:#FFC59E}
+#buf{position:fixed;left:-99999px;top:0;width:700px}
+</style></head><body><div class="wrap">
+<h1>🐿️ 영차 발행 도우미 <small style="font-size:13px;background:#22304A;color:#fff;border-radius:8px;padding:2px 8px">__VER__</small></h1>
+<div class="sub" id="wk"></div>
+<div class="tl" id="tl"></div>
+<div class="how"><b>글 하나 = 버튼 3번</b> &nbsp;① <b>제목 복사</b> → 제목칸 Ctrl+V &nbsp;② <b>본문 복사</b> → 본문칸 Ctrl+V (글·서식·그림 4장이 한 번에) &nbsp;③ <b>태그 복사</b> → 발행 창 태그칸 → 카테고리·예약 시간 고르고 발행<br>
+그림이 회색 상자로 보이면 몇 초 기다려 주세요. 그래도 빠진 그림만 오른쪽 미리보기에서 클릭 → Ctrl+V</div>
+<div id="cards"></div></div>
+<div id="buf" contenteditable="true"></div>
+<div class="toast" id="toast"></div>
+<script>
+const D=__DATA__;
+const KEY='yc6_'+D.week;const ST=(()=>{try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return{}}})();
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(ST))}catch(e){}};
+const arr=x=>Array.isArray(x)?x:(x?String(x).split('\n').filter(Boolean):[]);
+const st=id=>ST[id]=ST[id]||{title:0,done:false,ok:{}};
+document.getElementById('wk').textContent=D.week;
+let tt;function toast(h){const t=document.getElementById('toast');t.innerHTML=h;t.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('on'),3200)}
+async function copyText(s){try{await navigator.clipboard.writeText(s);return true}catch(e){const a=document.createElement('textarea');a.value=s;document.body.appendChild(a);a.select();const r=document.execCommand('copy');a.remove();return r}}
+async function copyRich(html,plain){
+ // 우리가 만든 HTML을 그대로 클립보드에 (페이지 배경색·굵기 등이 섞이지 않게)
+ let ok=false;const h=e=>{e.clipboardData.setData('text/html',html);e.clipboardData.setData('text/plain',plain);e.preventDefault();ok=true};
+ document.addEventListener('copy',h,{once:true});try{document.execCommand('copy')}catch(e){}
+ document.removeEventListener('copy',h);if(ok)return true;
+ try{await navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([plain],{type:'text/plain'})})]);return true}catch(e){return false}}
+function mark(p,k){st(p.id).ok[k]=1;save();const b=document.querySelector(`#c_${p.id} [data-a="${k}"]`);if(b)b.classList.add('ok')}
+function tl(){document.getElementById('tl').innerHTML=D.posts.map(p=>`<a href="#c_${p.id}" class="${st(p.id).done?'done':''}"><b>${p.date} ${p.time}</b>${p.type}${st(p.id).done?' ✅':''}</a>`).join('')}
+function render(){const C=document.getElementById('cards');C.innerHTML='';
+ D.posts.forEach(p=>{const s=st(p.id);const el=document.createElement('section');el.className='card'+(s.done?' isdone':'');el.id='c_'+p.id;
+ el.innerHTML=`<div class="head"><span class="badge">${p.date}</span><span class="badge time">예약 ${p.time}</span><span class="badge">${p.type}</span><span class="badge">${p.len.toLocaleString()}자 · 그림 ${p.nimg}장</span><label class="done"><input type="checkbox" ${s.done?'checked':''} data-x="done"> 예약 완료</label></div>
+ <div class="grid"><div>
+  <div class="titles">${p.titles.map((t,i)=>`<label><input type="radio" name="t_${p.id}" value="${i}" ${s.title==i?'checked':''}> ${t}</label>`).join('')}</div>
+  <button class="btn b1 ${s.ok.t?'ok':''}" data-a="t"><span class="n">1</span><span>제목 복사<small>네이버 제목칸에 Ctrl+V</small></span></button>
+  <button class="btn b2 ${s.ok.b?'ok':''}" data-a="b"><span class="n">2</span><span>본문 복사<small>글 + 서식 + 그림 ${p.nimg}장 한 번에 · 본문칸에 Ctrl+V</small></span></button>
+  <button class="btn b3 ${s.ok.g?'ok':''}" data-a="g"><span class="n">3</span><span>태그 복사<small>발행 창 태그칸에 Ctrl+V</small></span></button>
+  <div class="info">📂 카테고리 <b>${p.category}</b><br>⏰ 예약 <b>${p.date} ${p.time}</b></div>
+  <div class="fb">비상용: <button data-a="p">글자만 복사</button> · 빠진 그림은 오른쪽에서 클릭 → 복사</div>
+  <details><summary>확인 필요 · 출처</summary><ul>${arr(p.check).map(x=>`<li>${x}</li>`).join('')}</ul><ul>${arr(p.sources).map(x=>`<li>${x}</li>`).join('')}</ul></details>
+ </div><div class="preview">${p.prev}</div></div>`;
+ el.addEventListener('change',e=>{if(e.target.name=='t_'+p.id){s.title=+e.target.value;save()}if(e.target.dataset.x=='done'){s.done=e.target.checked;save();el.classList.toggle('isdone',s.done);tl()}});
+ el.addEventListener('click',async e=>{const im=e.target.closest('.im');if(im){try{const r=await fetch(im.querySelector('img').src);const bl=await r.blob();await navigator.clipboard.write([new ClipboardItem({'image/png':bl})]);im.classList.add('ok');toast('✅ <b>그림 '+im.dataset.n+'</b> 복사됨 → 네이버의 [그림 '+im.dataset.n+'] 줄을 지우고 Ctrl+V')}catch(err){toast('그림 복사 실패: 그림에 마우스 오른쪽 → 이미지 복사')}return}const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a;
+  if(a=='t'){if(await copyText(p.titles[s.title])){mark(p,'t');toast('✅ <b>제목</b> 복사됨 → 네이버 제목칸에 Ctrl+V')}}
+  if(a=='b'){const tmp=document.createElement('div');tmp.innerHTML=p.prev;tmp.querySelectorAll('.im').forEach(x=>{const im=x.querySelector('img');if(im&&im.src.startsWith('http')){x.replaceWith(x.querySelector('p'))}else{const q=document.createElement('p');q.style.cssText='font-size:16px;color:#E8743B;font-weight:bold';q.textContent='[그림 '+x.dataset.n+']';x.replaceWith(q)}});if(await copyRich(tmp.innerHTML,p.plain)){mark(p,'b');toast('✅ <b>본문 전체</b> 복사됨 → 네이버 본문칸 클릭 후 Ctrl+V')}else toast('복사 실패 — 다시 눌러주세요')}
+  if(a=='g'){if(await copyText(arr(p.tags).join(', '))){mark(p,'g');toast('✅ <b>태그</b> 복사됨 → 발행 창 태그칸 · 카테고리 <b>'+p.category+'</b> · 예약 <b>'+p.date+' '+p.time+'</b>')}}
+  if(a=='p'){if(await copyText(p.plain))toast('글자만 복사됨 · [그림] 자리에 저장한 그림을 넣어주세요')}
+ });
+ C.appendChild(el)});tl()}
+render();
+</script></body></html>
