@@ -84,7 +84,7 @@ for p in d["posts"]:
         if s["t"] == "img":
             n += 1; fn = files[s["k"]]
             shutil.copy(os.path.join(imgdir, fn), os.path.join(mdir, "img", fn))
-            s["src"] = (IMG_BASE + fn) if IMG_BASE else b64(os.path.join(imgdir, fn)); s["n"] = n
+            s["src"] = (IMG_BASE + fn + (("?v=" + os.environ["IMG_VER"]) if os.environ.get("IMG_VER") else "")) if IMG_BASE else b64(os.path.join(imgdir, fn)); s["n"] = n
             prev += f'<div class="im" data-n="{n}"><span>그림 {n} · 클릭하면 복사</span><p style="text-align:center"><img src="{s["src"]}" style="max-width:100%;width:640px"></p></div>'
             plain.append(f"[그림 {n}]")
             mseg.append({"type": "image", "file": "img/" + fn})
