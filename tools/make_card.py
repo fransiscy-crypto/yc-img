@@ -5,7 +5,7 @@ def page(c):
     E=html.escape
     rows="".join(f'<tr><th>{E(a)}</th><td>{E(b)}</td></tr>' for a,b in c['rows'])
     return f'''<!doctype html><html><head><meta charset="utf-8"><style>
-body{{margin:0}}.w{{width:1080px;height:1350px;background:#FBF4E6;position:relative;overflow:hidden;font-family:'Noto Sans CJK KR',sans-serif;color:#22304A}}
+body{{margin:0}}.w{{width:1080px;height:1350px;background:#FBF4E6;position:relative;overflow:hidden;font-family:'Noto Sans CJK KR','Noto Sans KR','Malgun Gothic','Apple SD Gothic Neo','Noto Color Emoji','Segoe UI Emoji',sans-serif;color:#22304A}}
 .tag{{position:absolute;left:72px;top:70px;background:#E8743B;color:#fff;font-size:30px;font-weight:700;padding:8px 22px;border-radius:30px}}
 h1{{position:absolute;left:72px;right:72px;top:140px;margin:0;font-size:60px;font-weight:900;letter-spacing:-1.5px;line-height:1.2;word-break:keep-all}}
 table{{position:absolute;left:72px;right:72px;top:310px;width:936px;border-collapse:separate;border-spacing:0 12px}}

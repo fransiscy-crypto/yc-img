@@ -7,7 +7,7 @@ def page(p):
     cap=E(p['cap']).replace('\n','<br>')
     big=E(p['big']); fs=104 if len(p['big'])<=10 else (84 if len(p['big'])<=16 else 66)
     return f'''<!doctype html><html><head><meta charset="utf-8"><style>
-body{{margin:0}}.w{{width:1080px;height:720px;background:#FBF4E6;position:relative;overflow:hidden;font-family:'Noto Sans CJK KR','Noto Color Emoji',sans-serif;color:#22304A}}
+body{{margin:0}}.w{{width:1080px;height:720px;background:#FBF4E6;position:relative;overflow:hidden;font-family:'Noto Sans CJK KR','Noto Sans KR','Malgun Gothic','Apple SD Gothic Neo','Noto Color Emoji','Segoe UI Emoji',sans-serif;color:#22304A}}
 .box{{position:absolute;left:60px;right:60px;top:60px;bottom:60px;background:#fff;border-radius:36px;border:4px solid #F3D9BF}}
 .e{{position:absolute;left:110px;top:105px;font-size:72px}}
 .big{{position:absolute;left:110px;right:110px;top:215px;font-size:{fs}px;font-weight:900;color:#E8743B;letter-spacing:-2px;line-height:1.1;word-break:keep-all}}

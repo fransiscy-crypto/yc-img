@@ -4,7 +4,7 @@ SQ='<g><path d="M196 236 C 300 236, 312 112, 250 72 C 206 46, 168 86, 200 112 C 
 def page(title,cat):
     t=html.escape(title); c=html.escape(cat)
     return f'''<!doctype html><html><head><meta charset="utf-8"><style>
-body{{margin:0}}.w{{width:1080px;height:1080px;background:#FBF4E6;position:relative;overflow:hidden;font-family:'Noto Sans CJK KR',sans-serif}}
+body{{margin:0}}.w{{width:1080px;height:1080px;background:#FBF4E6;position:relative;overflow:hidden;font-family:'Noto Sans CJK KR','Noto Sans KR','Malgun Gothic','Apple SD Gothic Neo','Noto Color Emoji','Segoe UI Emoji',sans-serif}}
 .tag{{position:absolute;left:80px;top:90px;background:#E8743B;color:#fff;font-size:34px;font-weight:700;padding:10px 26px;border-radius:40px}}
 .t{{position:absolute;left:80px;right:80px;top:190px;font-size:88px;font-weight:900;line-height:1.22;color:#22304A;letter-spacing:-2px;word-break:keep-all}}
 .f{{position:absolute;left:80px;bottom:80px;font-size:36px;font-weight:700;color:#7A6A55}}.f b{{color:#E8743B}}
